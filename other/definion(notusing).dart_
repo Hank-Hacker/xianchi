@@ -1,0 +1,30 @@
+/*List ccls = [
+    [],
+    ['車', '馬', '象', '士', '將', '士', '象', '馬', '車'],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', '包', ' ', ' ', ' ', ' ', ' ', '包', ' '],
+    ['卒', ' ', '卒', ' ', '卒', ' ', '卒', ' ', '卒'],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    ['兵', ' ', '兵', ' ', '兵', ' ', '兵', ' ', '兵'],
+    [' ', '炮', ' ', ' ', ' ', ' ', ' ', '炮', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    ['俥', '傌', '相', '仕', '帥', '仕', '相', '傌', '俥'],
+    [],
+  ]; */
+import 'package:flutter/material.dart';
+
+enum ChessType {king,mandarins,elephant,rook,horse,cannon,pawn}
+enum ChessColor {black,red}
+
+
+class Chessman{
+  Chessman(this.type,this.color){
+    // Map typetoname={ChessType.king:'將',
+    // ChessType.mandarins:'士',
+    // ChessType.elephant:}
+  }
+  ChessType type;
+  ChessColor color;
+  String name;
+}

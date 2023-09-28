@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xianchi/definion.dart';
 
 void main() {
   runApp(MyApp());
@@ -6,7 +7,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,20 +30,52 @@ class MyWidget extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<MyWidget> {
-  List ccls = [
-    ['車', '馬', '象', '士', '將', '士', '象', '馬', '車'],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', '包', ' ', ' ', ' ', ' ', ' ', '包', ' '],
-    ['卒', ' ', '卒', ' ', '卒', ' ', '卒', ' ', '卒'],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    ['兵', ' ', '兵', ' ', '兵', ' ', '兵', ' ', '兵'],
-    [' ', '炮', ' ', ' ', ' ', ' ', ' ', '炮', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    ['俥', '傌', '相', '仕', '帥', '仕', '相', '傌', '俥'],
-  ];
+  @override
+  List<List<Chessman?>> ccls =
+      List.generate(10, (index) => List.generate(9, (index) => null));
+  void initState() {
+    List<ChessPlace> puts = [
+      ChessPlace(Rook(ChessColor.black), 0, 0),
+      ChessPlace(Hores(ChessColor.black), 1, 0),
+      ChessPlace(Elephant(ChessColor.black), 2, 0),
+      ChessPlace(Mandarins(ChessColor.black), 3, 0),
+      ChessPlace(King(ChessColor.black), 4, 0),
+      ChessPlace(Mandarins(ChessColor.black), 5, 0),
+      ChessPlace(Elephant(ChessColor.black), 6, 0),
+      ChessPlace(Hores(ChessColor.black), 7, 0),
+      ChessPlace(Rook(ChessColor.black), 8, 0),
+      ChessPlace(Cannon(ChessColor.black), 1, 2),
+      ChessPlace(Cannon(ChessColor.black), 7, 2),
+      ChessPlace(Pawn(ChessColor.black), 0, 3),
+      ChessPlace(Pawn(ChessColor.black), 2, 3),
+      ChessPlace(Pawn(ChessColor.black), 4, 3),
+      ChessPlace(Pawn(ChessColor.black), 6, 3),
+      ChessPlace(Pawn(ChessColor.black), 8, 3),
+      ChessPlace(Rook(ChessColor.red), 0, 9),
+      ChessPlace(Hores(ChessColor.red), 1, 9),
+      ChessPlace(Elephant(ChessColor.red), 2, 9),
+      ChessPlace(Mandarins(ChessColor.red), 3, 9),
+      ChessPlace(King(ChessColor.red), 4, 9),
+      ChessPlace(Mandarins(ChessColor.red), 5, 9),
+      ChessPlace(Elephant(ChessColor.red), 6, 9),
+      ChessPlace(Hores(ChessColor.red), 7, 9),
+      ChessPlace(Rook(ChessColor.red), 8, 9),
+      ChessPlace(Cannon(ChessColor.red), 1, 7),
+      ChessPlace(Cannon(ChessColor.red), 7, 7),
+      ChessPlace(Pawn(ChessColor.red), 0, 6),
+      ChessPlace(Pawn(ChessColor.red), 2, 6),
+      ChessPlace(Pawn(ChessColor.red), 4, 6),
+      ChessPlace(Pawn(ChessColor.red), 6, 6),
+      ChessPlace(Pawn(ChessColor.red), 8, 6),
+    ];
+    for (var element in puts) {
+      ccls[element.y][element.x] = element.chess;
+    }
+    super.initState();
+  }
+
   List selected = [-1, -1];
-  static const List black = ['車', '馬', '象', '士', '將', '包', '卒'];
+  //static const List black = ['車', '馬', '象', '士', '將', '包', '卒'];
   bool blacksture = false;
   @override
   Widget build(BuildContext context) {
@@ -93,69 +125,85 @@ class _MyWidgetState extends State<MyWidget> {
                       SizedBox(
                         height: 40,
                         width: 40,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              height: 35,
-                              width: 35,
-                              decoration: BoxDecoration(
-                                color: ccls[i][j] == ' '
-                                    ? Colors.transparent
-                                    : Color.fromARGB(255, 160, 141, 107),
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            Text(
-                              ccls[i][j],
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: (black.contains(ccls[i][j]))
-                                    ? Colors.black
-                                    : Colors.red,
-                              ),
-                            ),
-                            OutlinedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if (ccls[i][j] != ' ' &&
-                                        selected[0] == -1 &&
-                                        blacksture ==
-                                            black.contains(ccls[i][j])) {
-                                      selected = [i, j];
-                                    } else {
-                                      if (selected[0] != -1) {
-                                        if (black.contains(ccls[i][j]) !=
-                                                black.contains(ccls[selected[0]]
-                                                    [selected[1]]) ||
-                                            (black.contains(ccls[selected[0]]
-                                                        [selected[1]]) ==
-                                                    false &&
-                                                ccls[i][j] == ' ')) {
-                                          ccls[i][j] =
-                                              ccls[selected[0]][selected[1]];
-                                          ccls[selected[0]][selected[1]] = ' ';
-                                          selected = [-1, -1];
-                                          blacksture = !blacksture;
-                                        } else {
+                        child: Builder(builder: (_) {
+                          if (ccls[i][j] != null) {
+                            return Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  height: 35,
+                                  width: 35,
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 160, 141, 107),
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                Text(
+                                  ccls[i][j]!.showText,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: ccls[i][j]!.isBlack
+                                        ? Colors.black
+                                        : Colors.red,
+                                  ),
+                                ),
+                                OutlinedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        if (selected[0] == -1 &&
+                                            blacksture ==
+                                                (ccls[i][j]!.isBlack)) {
                                           selected = [i, j];
+                                        } else {
+                                          if (ccls[i][j]!.isBlack !=
+                                              ccls[selected[0]][selected[1]]!
+                                                  .isBlack) {
+                                            ccls[i][j] =
+                                                ccls[selected[0]][selected[1]];
+                                            ccls[selected[0]][selected[1]] =
+                                                null;
+                                            selected = [-1, -1];
+                                            blacksture = !blacksture;
+                                          } else {
+                                            selected = [i, j];
+                                          }
                                         }
+                                      });
+                                    },
+                                    style: OutlinedButton.styleFrom(
+                                        shape: CircleBorder(),
+                                        backgroundColor:
+                                            Color.fromRGBO(0, 0, 0, 0),
+                                        side: BorderSide(
+                                          color: Colors.black,
+                                          width: 3,
+                                        )),
+                                    child: null),
+                              ],
+                            );
+                          } else
+                            return SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                      shape: CircleBorder(),
+                                      backgroundColor: Color.fromRGBO(0, 0, 0, 0),
+                                      side: BorderSide.none),
+                                  onPressed: () {
+                                    setState(() {
+                                      if (selected[0] != -1) {
+                                        ccls[i][j] =
+                                            ccls[selected[0]][selected[1]];
+                                        ccls[selected[0]][selected[1]] = null;
+                                        blacksture = !blacksture;
+                                        selected = [-1, -1];
                                       }
-                                    }
-                                  });
-                                },
-                                style: OutlinedButton.styleFrom(
-                                    shape: CircleBorder(),
-                                    backgroundColor: Color.fromRGBO(0, 0, 0, 0),
-                                    side: ccls[i][j] == ' '
-                                        ? BorderSide.none
-                                        : BorderSide(
-                                            color: Colors.black,
-                                            width: 3,
-                                          )),
-                                child: SizedBox()),
-                          ],
-                        ),
+                                    });
+                                  },
+                                  child: null),
+                            ); ////////////
+                        }),
                       )
                     // Center(
                     //   child: Container(
